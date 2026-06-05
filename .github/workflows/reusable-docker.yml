@@ -11,11 +11,13 @@ on:
         description: "Docker image tag"
         required: true
         type: string
+
     secrets:
       docker_username:
         required: true
       docker_token:
         required: true
+
     outputs:
       image_url:
         description: "Full Docker image URL"
@@ -32,18 +34,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Validate Docker secrets
+        run: |
+          if [ -z "${{ secrets.docker_username }}" ]; then
+            echo "docker_username is missing"
+            exit 1
+          fi
+
+          if [ -z "${{ secrets.docker_token }}" ]; then
+            echo "docker_token is missing"
+            exit 1
+          fi
+
+          echo "Docker secrets are available"
+
       - name: Log in to Docker Hub
-        uses: docker/login-action@v4
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.docker_username }}
+          password: ${{ secrets.docker_token }}
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.image_name }}:${{ inputs.tag }} .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.image_name }}:${{ inputs.tag }}
+          docker build -t ${{ secrets.docker_username }}/${{ inputs.image_name }}:${{ inputs.tag }} .
+          docker push ${{ secrets.docker_username }}/${{ inputs.image_name }}:${{ inputs.tag }}
 
       - name: Set image URL output
         id: image-info
         run: |
-          echo "image_url=${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.image_name }}:${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
+          echo "image_url=${{ secrets.docker_username }}/${{ inputs.image_name }}:${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
