@@ -56,15 +56,18 @@ jobs:
           username: ${{ inputs.docker_username }}
           password: ${{ secrets.docker_token }}
 
-      - name: Build and push Docker image
+      - name: Build Docker Image
         run: |
-          IMAGE_URL="${{ inputs.docker_username }}/${{ inputs.image_name }}:${{ inputs.tag }}"
-          echo "Building image: $IMAGE_URL"
-          docker build -t "$IMAGE_URL" .
-          docker push "$IMAGE_URL"
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/github-actions-capstone:latest .
 
-      - name: Set image URL output
-        id: image-info
+      - name: Scan Docker Image for Vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.DOCKER_USERNAME }}/github-actions-capstone:latest'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Push Docker Image
         run: |
-          IMAGE_URL="${{ inputs.docker_username }}/${{ inputs.image_name }}:${{ inputs.tag }}"
-          echo "image_url=$IMAGE_URL" >> "$GITHUB_OUTPUT"
+          docker push ${{ secrets.DOCKER_USERNAME }}/github-actions-capstone:latest
