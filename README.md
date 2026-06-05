@@ -71,10 +71,7 @@ github-actions-capstone/
 ├── Dockerfile
 ├── pytest.ini
 ├── requirements.txt
-├── README.md
-└── 2026/
-    └── day-48/
-        └── day-48-actions-project.md
+└── README.md
 ```
 
 ---
@@ -436,14 +433,14 @@ After the fix, the security scan passed successfully.
 
 ### Repository Secret
 
-| Name           | Purpose                 |
-| -------------- | ----------------------- |
+| Name              | Purpose                 |
+| ----------------- | ----------------------- |
 | `DOCKERHUB_TOKEN` | Docker Hub access token |
 
 ### Repository Variable
 
-| Name              | Purpose             |
-| ----------------- | ------------------- |
+| Name                 | Purpose             |
+| -------------------- | ------------------- |
 | `DOCKERHUB_USERNAME` | Docker Hub username |
 
 Docker username is stored as a variable because it is not sensitive.
