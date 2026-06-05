@@ -438,13 +438,13 @@ After the fix, the security scan passed successfully.
 
 | Name           | Purpose                 |
 | -------------- | ----------------------- |
-| `DOCKER_TOKEN` | Docker Hub access token |
+| `DOCKERHUB_TOKEN` | Docker Hub access token |
 
 ### Repository Variable
 
 | Name              | Purpose             |
 | ----------------- | ------------------- |
-| `DOCKER_USERNAME` | Docker Hub username |
+| `DOCKERHUB_USERNAME` | Docker Hub username |
 
 Docker username is stored as a variable because it is not sensitive.
 
